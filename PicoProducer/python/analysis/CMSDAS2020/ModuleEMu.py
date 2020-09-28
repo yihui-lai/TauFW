@@ -6,7 +6,7 @@ import math
 import numpy as np
 from PhysicsTools.NanoAODTools.postprocessing.framework.eventloop import Module
 from PhysicsTools.NanoAODTools.postprocessing.framework.datamodel import Collection, Object
-from TauFW.PicoProducer.analysis.utils import LeptonPair, idIso, matchtaujet. deltaPhi
+from TauFW.PicoProducer.analysis.utils import LeptonPair, idIso, matchtaujet, deltaPhi
 
 # Inspired by 'Object' class from NanoAODTools.
 # Convenient to do so to be able to add MET as 4-momentum to other physics objects using p4()
@@ -161,29 +161,11 @@ class ModuleEMu(Module):
     if not event.HLT_IsoMu24 or event.HLT_IsoMu27: return False
     self.cutflow.Fill(self.cut_trig)
     
-
-    
-    ##### ELECTRON ###################################
-    electrons = [ ]
-    veto_electrons = [ ]
-    for electron in Collection(event,'Electron'):
-      good_electron = (electron.mvaFall17V2noIso_WP90 or electron.mvaFall17V2noIso_WP90) and electron.pfRelIso03_all < 0.5 and abs(electron.eta) < 2.3 and electron.convVeto and electron.lostHits<=1 and electron.dz<0.2 and electron.dxy<0.045
-      signal_electron = good_electron and electron.pt > 15.0 
-      veto_electron   = good_electron and electron.pt > 10.0 and electron.pt <= 15.0 
-      if signal_electron:
-        electrons.append(electron)
-      if veto_electron:
-        veto_electrons.append(electron)
-    if len(electrons) == 0: return False
-    self.cutflow.Fill(self.cut_electron) 
-    if len(veto_electrons) > 0: return False
-    self.out.cutflow.fill(self.cut_electron_veto)
-    
     ##### MUON #######################################
     muons = [ ]
     veto_muons = [ ]
     for muon in Collection(event,'Muon'):
-      good_muon = muon.mediumId and muon.pfRelIso04_all < 0.5 and abs(muon.eta) < 2.4 and and muon.dz<0.2 and muon.dxy<0.045
+      good_muon = muon.mediumId and muon.pfRelIso04_all < 0.5 and abs(muon.eta) < 2.4 and muon.dz<0.2 and muon.dxy<0.045
       signal_muon = good_muon and muon.pt > 25.0 
       veto_muon   = good_muon and muon.pt > 15.0 and muon.pt <= 25.0 
       if signal_muon:
@@ -191,10 +173,28 @@ class ModuleEMu(Module):
       if veto_muon: 
         veto_muons.append(muon)
     if len(muons)==0: return False
-    self.out.cutflow.fill(self.cut_muon)
+    self.cutflow.Fill(self.cut_muon)
     if len(veto_muons) > 0: return False
     self.cutflow.Fill(self.cut_muon_veto)
     
+
+    ##### ELECTRON ###################################
+    electrons = [ ]
+    veto_electrons = [ ]
+    for electron in Collection(event,'Electron'):
+      good_electron = (electron.mvaFall17V2noIso_WP90 or electron.mvaFall17V2noIso_WP90) and electron.pfRelIso03_all < 0.5 and abs(electron.eta) < 2.3 and electron.convVeto and electron.lostHits<=1 and electron.dz<0.2 and electron.dxy<0.045
+      signal_electron = good_electron and electron.pt > 15.0
+      veto_electron   = good_electron and electron.pt > 10.0 and electron.pt <= 15.0
+      if signal_electron:
+        electrons.append(electron)
+      if veto_electron:
+        veto_electrons.append(electron)
+    if len(electrons) == 0: return False
+    self.cutflow.Fill(self.cut_electron)
+    if len(veto_electrons) > 0: return False
+    self.cutflow.Fill(self.cut_electron_veto)
+
+
     ##### eMu PAIR #################################
     dileps = [ ]
     for electron in electrons:
@@ -207,7 +207,7 @@ class ModuleEMu(Module):
     electron, muon = max(dileps).pair
     #electron.tlv   = electron.p4()
     #muon.tlv       = muon.p4()
-    self.out.cutflow.fill(self.cut_pair)
+    self.cutflow.Fill(self.cut_pair)
     
 
 
