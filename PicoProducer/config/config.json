@@ -1,16 +1,23 @@
 {
   "channels": {
     "skim": "skimjob.py", 
-    "skim-jec": "skimjob.py --jec-sys",
+    "skim-jec": "skimjob.py --jec-sys", 
     "gen": "GenDumper", 
-    "mutau": "ModuleMuTauSimple"
+    "mutau": "CMSDAS2020.ModuleMuTau", 
+    "emu": "CMSDAS2020.ModuleEMu"
   }, 
   "eras": {
     "2016": "examples/samples_2016.py", 
     "2017": "examples/samples_2017.py", 
-    "2018": "examples/samples_2018.py"
+    "2018": "CMSDAS2020/samples_mutau_2018.py"
   }, 
   "nfilesperjob": 1, 
   "filelistdir": "samples/files/$ERA/$SAMPLE.txt", 
-  "jobdir": "output/$ERA/$CHANNEL/$SAMPLE"
+  "jobdir": "/afs/cern.ch/work/y/yilai/output/$ERA/$CHANNEL/$SAMPLE", 
+  "basedir": "/afs/cern.ch/user/y/yilai/TauLongCMSDAS2020/CMSSW_10_6_17_patch1/src/TauFW/PicoProducer", 
+  "outdir": "/eos/user/y/yilai/TauLongCMSDAS2020/output/$ERA/$CHANNEL/$SAMPLE", 
+  "nanodir": "/eos/user/y/yilai/TauLongCMSDAS2020/samples/nano/$ERA/$DAS", 
+  "picodir": "/eos/user/y/yilai/TauLongCMSDAS2020/analysis/$ERA/$GROUP", 
+  "tmpskimdir": "", 
+  "batch": "HTCondor"
 }
