@@ -165,7 +165,8 @@ class ModuleEMu(Module):
     muons = [ ]
     veto_muons = [ ]
     for muon in Collection(event,'Muon'):
-      good_muon = muon.mediumId and muon.pfRelIso04_all < 0.5 and abs(muon.eta) < 2.4 and muon.dz<0.2 and muon.dxy<0.045
+      good_muon = muon.mediumId and muon.pfRelIso04_all < 0.5 and abs(muon.eta) < 2.4
+# and muon.dz<0.2 and muon.dxy<0.045
       signal_muon = good_muon and muon.pt > 25.0 
       veto_muon   = good_muon and muon.pt > 15.0 and muon.pt <= 25.0 
       if signal_muon:
@@ -174,7 +175,7 @@ class ModuleEMu(Module):
         veto_muons.append(muon)
     if len(muons)==0: return False
     self.cutflow.Fill(self.cut_muon)
-    if len(veto_muons) > 0: return False
+    if len(veto_muons) > 1: return False
     self.cutflow.Fill(self.cut_muon_veto)
     
 
@@ -182,7 +183,8 @@ class ModuleEMu(Module):
     electrons = [ ]
     veto_electrons = [ ]
     for electron in Collection(event,'Electron'):
-      good_electron = (electron.mvaFall17V2noIso_WP90 or electron.mvaFall17V2noIso_WP90) and electron.pfRelIso03_all < 0.5 and abs(electron.eta) < 2.3 and electron.convVeto and electron.lostHits<=1 and electron.dz<0.2 and electron.dxy<0.045
+      good_electron = electron.mvaFall17V2noIso_WPL and electron.pfRelIso03_all < 0.5 and abs(electron.eta) < 2.3 
+#and electron.convVeto and electron.lostHits<=1 and electron.dz<0.2 and electron.dxy<0.045
       signal_electron = good_electron and electron.pt > 15.0
       veto_electron   = good_electron and electron.pt > 10.0 and electron.pt <= 15.0
       if signal_electron:
@@ -191,7 +193,7 @@ class ModuleEMu(Module):
         veto_electrons.append(electron)
     if len(electrons) == 0: return False
     self.cutflow.Fill(self.cut_electron)
-    if len(veto_electrons) > 0: return False
+    if len(veto_electrons) > 1: return False
     self.cutflow.Fill(self.cut_electron_veto)
 
 
