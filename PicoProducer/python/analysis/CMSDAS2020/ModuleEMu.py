@@ -285,7 +285,7 @@ class ModuleEMu(Module):
     self.z_vis_pt[0]    = (muon.p4()+electron.p4()).Pt()
     self.z_full_pt[0]   = (puppimet.p4()+muon.p4()+electron.p4()).Pt()
     self.dphi[0]        = deltaPhi(muon.phi , puppimet.phi )
-    self.mt[0]          = math.sqrt( 2*muon.pt*puppimet.sumEt*(1 - math.cos(self.dphi[0])) ) 
+    self.mt[0]          = math.sqrt( 2*muon.pt*puppimet.pt*(1 - math.cos(self.dphi[0])) ) 
     bisec = (muon.phi + electron.phi)/2.0
     self.miss_Dzeta[0]  = puppimet.pt * math.cos(bisec - puppimet.phi)
     self.vis_Dzeta[0]   = muon.pt*math.cos(bisec - muon.phi) + electron.pt*math.cos(bisec - muon.phi)
