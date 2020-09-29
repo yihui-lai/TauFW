@@ -158,7 +158,7 @@ class ModuleEMu(Module):
     self.cutflow.Fill(self.cut_none)
     
     # TRIGGER
-    if not event.HLT_IsoMu24 or event.HLT_IsoMu27: return False
+    if not (event.HLT_IsoMu24 or event.HLT_IsoMu27): return False
     self.cutflow.Fill(self.cut_trig)
     
     ##### MUON #######################################
@@ -168,7 +168,7 @@ class ModuleEMu(Module):
       good_muon = muon.mediumId and muon.pfRelIso04_all < 0.5 and abs(muon.eta) < 2.4
 # and muon.dz<0.2 and muon.dxy<0.045
       signal_muon = good_muon and muon.pt > 25.0 
-      veto_muon   = good_muon and muon.pt > 15.0 and muon.pt <= 25.0 
+      veto_muon   = good_muon and muon.pt > 15.0 
       if signal_muon:
         muons.append(muon)
       if veto_muon: 
@@ -186,7 +186,7 @@ class ModuleEMu(Module):
       good_electron = electron.mvaFall17V2noIso_WPL and electron.pfRelIso03_all < 0.5 and abs(electron.eta) < 2.3 
 #and electron.convVeto and electron.lostHits<=1 and electron.dz<0.2 and electron.dxy<0.045
       signal_electron = good_electron and electron.pt > 15.0
-      veto_electron   = good_electron and electron.pt > 10.0 and electron.pt <= 15.0
+      veto_electron   = good_electron and electron.pt > 10.0
       if signal_electron:
         electrons.append(electron)
       if veto_electron:
